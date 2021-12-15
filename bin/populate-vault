@@ -5,5 +5,5 @@ put-secret --team network --pipeline "$(basename ${PROJECT_DIR})" \
   --var google-credentials "$(cat ${SECRETS_DIR}/$(basename ${PROJECT_DIR}.json))"
 
 put-secret --team network --pipeline "$(basename ${PROJECT_DIR})" \
-  --var gcs region="us-west-1" bucket="$(basename ${PROJECT_DIR}.json)" prefix="teraform/state"
+  --var gcs region="us-west-1" bucket="$(basename ${PROJECT_DIR})" prefix="terraform/state"
   

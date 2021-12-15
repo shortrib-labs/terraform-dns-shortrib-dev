@@ -1,7 +1,7 @@
 ---
 resources:
 # The repo with the DNS source
-- name: dns-shortrib-dev-source
+- name: source
   type: git
   icon: github
   source:
@@ -9,23 +9,31 @@ resources:
     branch: ((git.branch))
 
 # The repo with the DNS source
-- name: dns-shortrib-dev-records
+- name: records
   type: terraform
   icon: terraform
   source:
+    env_name: default
+    vars:
+      project: shortrib
+      region: ((gcs.region))
+    env:
+      GOOGLE_CREDENTIALS: ((google-credentials))
     backend_type: gcs
     backend_config:
       bucket: ((gcs.bucket)) 
       prefix: ((gcs.prefix))
-      region: ((gcs.region))
+      # region: ((gcs.region))
       credentials: ((google-credentials))
 
 jobs:
 - name: update-dns
   plan:
-  - get: dns-shortrib-dev-source
+  - get: source
     trigger: true
-  - put: dns-shortrib-dev-records
+  - put: records
+    params:
+      terraform_source: source/src/terraform
 
 
 resource_types:
