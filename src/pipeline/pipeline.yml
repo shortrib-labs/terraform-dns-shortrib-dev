@@ -1,0 +1,44 @@
+---
+resources:
+# The repo with the DNS source
+- name: source
+  type: git
+  icon: github
+  source:
+    uri: ((git.repository))
+    branch: ((git.branch))
+
+# The repo with the DNS source
+- name: records
+  type: terraform
+  icon: terraform
+  source:
+    env_name: default
+    vars:
+      project: shortrib
+      region: ((gcs.region))
+    env:
+      GOOGLE_CREDENTIALS: ((google-credentials))
+    backend_type: gcs
+    backend_config:
+      bucket: ((gcs.bucket)) 
+      prefix: ((gcs.prefix))
+      # region: ((gcs.region))
+      credentials: ((google-credentials))
+
+jobs:
+- name: update-dns
+  plan:
+  - get: source
+    trigger: true
+  - put: records
+    params:
+      terraform_source: source/src/terraform
+
+
+resource_types:
+- name: terraform
+  type: registry-image
+  source:
+    repository: ljfranklin/terraform-resource
+    tag: latest
