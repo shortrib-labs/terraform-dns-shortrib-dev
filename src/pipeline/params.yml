@@ -1,0 +1,3 @@
+git:
+  repository: shortrib-net/terraform-dns-shortrib-dev.git
+  branch: feature-automation
