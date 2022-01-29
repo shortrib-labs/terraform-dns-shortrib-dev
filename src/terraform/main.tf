@@ -52,6 +52,6 @@ resource "google_dns_record_set" "kubernetes" {
   ttl          = 60
 
   rrdatas = [
-    "shared-services.crdant.io.beta.tailscale.net."
+    "arbol.crdant.io.beta.tailscale.net."
   ]
 }
